@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <div>
+        <form id="FormUpload" name="FormUpload" method="post" action="api/FileUpload/Upload" enctype="multipart/form-data">
+            <input type="file" name="uploadFile" multiple="multiple" />
+            <input type="submit" />
+        </form>
+        <div class="progress" style="width:50%">
+            <div class="progress-bar"></div>
+            <div class="percent">0%</div>
+        </div>
+        <div id="status"></div>
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script>
+            $.noConflict();
+            jQuery(document).ready(function ($) {
+                var bar = $('.progress-bar');
+                var percent = $('.percent');
+                var status = $('#status');
+
+                $('#FormUpload').ajaxForm({
+                    beforeSend: function () {
+                        status.empty();
+                        var percentVal = '0%';
+                        bar.width(percentVal);
+                        percent.html(percentVal);
+                    },
+                    uploadProgress: function (event, position, total, percentComplete) {
+                        var percentVal = percentComplete + '%';
+                        bar.width(percentVal);
+                        percent.html(percentVal);
+                    },
+                    complete: function (xhr) {
+                        status.html(xhr.responseText);
+                    }
+                });
+            });</script>
+
+    </div>
+</body>
+</html>
